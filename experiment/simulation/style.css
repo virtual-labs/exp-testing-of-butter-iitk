@@ -1324,15 +1324,15 @@ body {
   top: 55%;
 
   /* Center it horizontally relative to the stand to start */
-  left: 16.79%;
+  left: 16.65%;
 
   /* Make it wide enough to actually see */
-  width: 1%;
+  width: 0.7%;
 
   height: 3%;
 
   /* CRITICAL: Must be higher than #standImage (50) */
-  z-index: 100;
+  z-index: 10;
 
   pointer-events: none;
 }
@@ -1345,15 +1345,15 @@ body {
   top: 98%;
 
   /* Center it horizontally relative to the stand to start */
-  left: 22.6%;
+  left: 22%;
 
   /* Make it wide enough to actually see */
-  width: 7%;
+  width: 6%;
 
   height: 5%;
 
   /* CRITICAL: Must be higher than #standImage (50) */
-  z-index: 100;
+  z-index: 4;
 
   pointer-events: none;
 }
@@ -1368,7 +1368,7 @@ body {
   width: 1.6%;
   height: 45%;
   z-index: 1;
-
+  transition: clip-path 0.8s ease-in-out;
 }
 
 /* #buretteNozzel{
@@ -2208,6 +2208,41 @@ body {
   font-weight: bold;
 }
 
+/* Result button */
+#btnResult {
+  margin-top: 2vmin;
+  align-self: center;
+  padding: 1vmin 3vmin;
+  font-size: 2vmin;
+  cursor: pointer;
+  background: #ffff00;
+  color: #0f3d3d;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#btnResult:hover {
+  background: #fff176;
+}
+
+/* Result Display */
+#resultDisplay {
+  margin-top: 1.5vmin;
+  padding: 1.5vmin 2vmin;
+  border: 2px solid #ffff00;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+#resultDisplay p {
+  font-size: 2.5vmin;
+  font-weight: bold;
+  color: #ffff00;
+  margin: 0;
+}
+
 .chalk-text {
   background: rgba(255, 255, 255, 0.1);
   padding: 1vmin;
@@ -2336,6 +2371,14 @@ body {
 }
 
 /* ─── HOVER TOOLTIPS ─────────────────────────────────────────────────── */
+
+/* Hide ALL tooltips once the experiment starts */
+body.tooltips-off [data-tooltip]::before {
+  display: none !important;
+}
+body.tooltips-off #global-tooltip {
+  display: none !important;
+}
 
 /* No isolation:isolate — it creates a stacking context that breaks butter rendering */
 [data-tooltip]::before {

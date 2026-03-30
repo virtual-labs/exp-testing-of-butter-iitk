@@ -62,93 +62,86 @@ document.addEventListener("DOMContentLoaded", () => {
   const waterBathStart = elementId("waterBathStart");
   const tempBtn = elementId("tempBtn");
   // ===== FORMULA TOGGLE LOGIC =====
-const formulaButton = document.getElementById("formulaButton");
-const formulaBox = document.querySelector(".formula-box");
-let calResult = 0;
+  const formulaButton = document.getElementById("formulaButton");
+  const formulaBox = document.querySelector(".formula-box");
+  let calResult = 0;
 
-let formulaOpen = false;
+  let formulaOpen = false;
 
-if (formulaButton && formulaBox) {
-  formulaButton.addEventListener("click", () => {
-    formulaOpen = !formulaOpen;
-    formulaBox.style.display = formulaOpen ? "block" : "none";
-    formulaButton.innerText = formulaOpen ? "Hide Formula" : "Show Formula";
-  });
-}
-
-const result = document.getElementById("result");
-const finalResult = document.getElementsByClassName("final-result")[0];
-let resultOpen = false;
-
-
-if (result && finalResult) {
-  
-  result.addEventListener("click", () => {
-    if(resultOpen){
-    finalResult.style.display = "block";
-    document.getElementById("calcResult").innerText =`Result: ${calResult.toFixed(3)} % FFA`;
+  if (formulaButton && formulaBox) {
+    formulaButton.addEventListener("click", () => {
+      formulaOpen = !formulaOpen;
+      formulaBox.style.display = formulaOpen ? "block" : "none";
+      formulaButton.innerText = formulaOpen ? "Hide Formula" : "Show Formula";
+    });
   }
-    else{
-       finalResult.style.display = "none";
-    }
-    resultOpen = !resultOpen;
-  })};
-    
 
-// ===== ANSWER CHECK LOGIC =====
-const checkBtn = document.getElementById("checkBtn");
-const userAnswer = document.getElementById("userAnswer");
+  const result = document.getElementById("result");
+  const finalResult = document.getElementsByClassName("final-result")[0];
+  let resultOpen = false;
 
-// You already use these values in showCalculation()
-// const CORRECT_V = dropVolume;
-// // /const CORRECT_V = 3.5; // Example correct volume in mL
-// const N = 0.1;
-// const W = 5.0;
-// const FACTOR = 0.282;
+  if (result && finalResult) {
+    result.addEventListener("click", () => {
+      if (resultOpen) {
+        finalResult.style.display = "block";
+        document.getElementById("calcResult").innerText =
+          `Result: ${calResult.toFixed(3)} % FFA`;
+      } else {
+        finalResult.style.display = "none";
+      }
+      resultOpen = !resultOpen;
+    });
+  }
 
-const answerCheck = document.getElementById("answerCheck");
-const wrongText = document.getElementById("wrongText");
-const rightText = document.getElementById("rightText");
+  // ===== ANSWER CHECK LOGIC =====
+  const checkBtn = document.getElementById("checkBtn");
+  const userAnswer = document.getElementById("userAnswer");
 
-const N = 0.1;
-const W = 5.0;
-const FACTOR = 0.282;
-const tolerance = 0.01;
+  // You already use these values in showCalculation()
+  // const CORRECT_V = dropVolume;
+  // // /const CORRECT_V = 3.5; // Example correct volume in mL
+  // const N = 0.1;
+  // const W = 5.0;
+  // const FACTOR = 0.282;
 
-if (checkBtn) {
-  checkBtn.addEventListener("click", () => {
+  const answerCheck = document.getElementById("answerCheck");
+  const wrongText = document.getElementById("wrongText");
+  const rightText = document.getElementById("rightText");
 
-    const studentValue = parseFloat(userAnswer.value);
-    const correctAnswer = ((dropVolume * N * FACTOR) / W) * 100;
+  const N = 0.1;
+  const W = 5.0;
+  const FACTOR = 0.282;
+  const tolerance = 0.01;
 
-    if (isNaN(studentValue)) {
-      return;
-    }
+  if (checkBtn) {
+    checkBtn.addEventListener("click", () => {
+      const studentValue = parseFloat(userAnswer.value);
+      const correctAnswer = ((dropVolume * N * FACTOR) / W) * 100;
 
-    // Remove previous highlights
-    wrongText.classList.remove("highlight");
-    rightText.classList.remove("highlight");
+      if (isNaN(studentValue)) {
+        return;
+      }
 
-    if (Math.abs(studentValue - correctAnswer) <= tolerance) {
-      rightText.classList.add("highlight");
-    } else {
-      wrongText.classList.add("highlight");
-    }
+      // Remove previous highlights
+      wrongText.classList.remove("highlight");
+      rightText.classList.remove("highlight");
 
-  });
-}
+      if (Math.abs(studentValue - correctAnswer) <= tolerance) {
+        rightText.classList.add("highlight");
+      } else {
+        wrongText.classList.add("highlight");
+      }
+    });
+  }
 
   // const mmBtn = elementId("mm");
   // const ssBtn = elementId("ss");
-  
+
   const waterBathCurrentTemp = elementId("waterBathCurrentTemp");
   const waterBathSetTemp = elementId("waterBathSetTemp");
   let bathTimerInterval = null;
-let bathTimeRemaining = 180; // seconds (3 minutes)
+  let bathTimeRemaining = 180; // seconds (3 minutes)
 
-
-
-  
   const next1 = document.querySelector(".next");
   const next2 = document.querySelector(".next2");
   const next3 = document.querySelector(".next3");
@@ -174,64 +167,107 @@ let bathTimeRemaining = 180; // seconds (3 minutes)
   let dropCount = 0;
   let isDropping = false;
   let buretteDropCount = 0; // Added for Titration logic
-let buretteOpen = false;
-let buretteInterval = null;
-
+  let buretteOpen = false;
+  let buretteInterval = null;
 
   // --- WATER BATH SCREEN UPDATE ---
-function updateWaterBathScreen() {
-  if (!isWaterBathOn) {
-    waterBathCurrentTemp.innerText = "--°C";
-    waterBathSetTemp.innerText = "SET: --°C";
-    currentTemp = 25;
-    setTemp = 0;
-    return;
+  function updateWaterBathScreen() {
+    if (!isWaterBathOn) {
+      waterBathCurrentTemp.innerText = "--°C";
+      waterBathSetTemp.innerText = "SET: --°C";
+      currentTemp = 25;
+      setTemp = 0;
+      return;
+    }
+
+    waterBathCurrentTemp.innerText = `${currentTemp}°C`;
+    waterBathSetTemp.innerText = `SET: ${setTemp}°C`;
   }
 
-  waterBathCurrentTemp.innerText = `${currentTemp}°C`;
-  waterBathSetTemp.innerText = `SET: ${setTemp}°C`;
-}
-
-
-
   function updateSidebarProgress(currentStep) {
-  const stepItems = document.querySelectorAll("#stepList li");
-  stepItems.forEach((li) => {
-    const stepNum = Number(li.getAttribute("data-step"));
-    if (isNaN(stepNum)) return;
-    li.classList.toggle("completed", stepNum < currentStep);
-    li.classList.toggle("current", stepNum === currentStep);
-  });
-}
+    const stepItems = document.querySelectorAll("#stepList li");
+    stepItems.forEach((li) => {
+      const stepNum = Number(li.getAttribute("data-step"));
+      if (isNaN(stepNum)) return;
+      li.classList.toggle("completed", stepNum < currentStep);
+      li.classList.toggle("current", stepNum === currentStep);
+    });
+  }
 
-function updateInstruction(step) {
+  function updateInstruction(step) {
     const stepBox = document.querySelector(".stepBox");
     if (!stepBox) return;
 
     let msg = "";
     switch (step) {
-
-      case 0: msg = "Hover over the instruments to familiarize yourself with the setup."; break;
-      case 1: msg = "Click the knife to cut a butter slice."; break;
-      case 2: msg = "Turn on the Weighing Machine."; break;
-      case 3: msg = "Click the Empty Flask to weigh it."; break;
-      case 4: msg = " Click 'Tare' to reset weight to 0.00g."; break;
-      case 5: msg = "Click the Spatula to add butter to the flask."; break;
-      case 6: msg = "Click the Flask to take it out of the weighting machine."; break;
-      case 7: msg = "Click 'Next' (Bottom Right) to proceed."; break;
-      case 8: msg = "Click on the Neutralized Ethanol to add 50ml of it in the flask."; break;
-      case 9: msg = "Click 'Next' (Bottom Right) to proceed."; break;
-      case 10: msg = "Click Flask to move to Water Bath."; break;
-      case 11: msg = "Set Temp 50°C, Timer 1m, then Start."; break;
-      case 12: msg = "Click 'Next' (Bottom Right) to proceed"; break;
-      case 13: msg = "Click Pipette to add Phenolphthalein."; break;
-      case 14: msg = "Click Pipette to add drops."; break;
-      case 15: msg = "Drops added. Click Pipette to move it aside."; break;
-      case 16: msg = "Click 'Next' (Bottom Right) to proceed."; break;
-      case 17: msg = "Click Flask to place under Burette."; break;
-      case 18: msg = "Click the burette nozzle to start/stop titration drops."; break;
-      case 19: msg = "Click 'Observation' to view the calculation table."; break;
-      default: msg = "Follow the on-screen procedures.";
+      case 0:
+        msg =
+          "Hover over the instruments to familiarize yourself with the setup. Then click on the start button to start button to proceed.";
+        break;
+      case 1:
+        msg = "Click the knife to cut a butter slice.";
+        break;
+      case 2:
+        msg = "Turn on the Weighing Machine.";
+        break;
+      case 3:
+        msg = "Click the Empty Flask to weigh it.";
+        break;
+      case 4:
+        msg = " Click 'Tare' to reset weight to 0.00g.";
+        break;
+      case 5:
+        msg = "Click the Spatula to add butter to the flask.";
+        break;
+      case 6:
+        msg = "Click the Flask to take it out of the weighting machine.";
+        break;
+      case 7:
+        msg = "Click 'Next' (Bottom Right) to proceed.";
+        break;
+      case 8:
+        msg =
+          "Click on the Neutralized Ethanol to add 50ml of it into the Measuring Cylinder.";
+        break;
+      case 9:
+        msg =
+          "Click on the Measuring Cylinder to pour 50ml of it into the flask.";
+        break;
+      case 10:
+        msg = "Click 'Next' (Bottom Right) to proceed.";
+        break;
+      case 11:
+        msg = "Click on the Flask to move it upon the Hot Metal Plate";
+        break;
+      case 12:
+        msg = "Set Temp 50°C, Timer 1m, then Start.";
+        break;
+      case 13:
+        msg = "Click 'Next' (Bottom Right) to proceed";
+        break;
+      case 14:
+        msg = "Click Pipette to add Phenolphthalein.";
+        break;
+      case 15:
+        msg = "Click Pipette to add drops.";
+        break;
+      case 16:
+        msg = "Drops added. Click Pipette to move it aside.";
+        break;
+      case 17:
+        msg = "Click 'Next' (Bottom Right) to proceed.";
+        break;
+      case 18:
+        msg = "Click Flask to place under Burette.";
+        break;
+      case 19:
+        msg = "Click the burette nozzle to start/stop titration drops.";
+        break;
+      case 20:
+        msg = "Click 'Observation' button to view the calculation table.";
+        break;
+      default:
+        msg = "Follow the on-screen procedures.";
     }
     stepBox.innerHTML = `<span style="color: rgb(187, 4, 4);">Instruction:</span> ${msg}`;
     updateSidebarProgress(step);
@@ -239,6 +275,7 @@ function updateInstruction(step) {
 
   // Initialize with the first instruction (step 0) before the user starts
   experimentStep = 0;
+  console.log(`Updating instruction to step 0`);
   updateInstruction(0);
 
   const stepToggleBtn = document.getElementById("stepToggleBtn");
@@ -251,38 +288,43 @@ function updateInstruction(step) {
   }
 
   // --- DEBUG STEP JUMP (NO CONSOLE REQUIRED) ---
-window.jumpToStep = function(step) {
+  window.jumpToStep = function (step) {
+    // Unlock everything
+    isDropping = false;
 
-  // Unlock everything
-  isDropping = false;
+    // Make sure core elements exist
+    flask.style.display = "block";
+    butterMelted.style.display = "block";
+    diethylEther.style.display = "block";
 
-  // Make sure core elements exist
-  flask.style.display = "block";
-  butterMelted.style.display = "block";
-  diethylEther.style.display = "block";
+    // Hide Next buttons
+    if (next1) next1.style.display = "none";
+    if (next2) next2.style.display = "none";
+    if (next3) next3.style.display = "none";
+    if (next4) next4.style.display = "none";
 
-  // Hide Next buttons
-  if (next1) next1.style.display = "none";
-  if (next2) next2.style.display = "none";
-  if (next3) next3.style.display = "none";
-  if (next4) next4.style.display = "none";
-
-  experimentStep = step;
-  updateInstruction(step);
-};
-
+    experimentStep = step;
+    updateInstruction(step);
+  };
 
   // Start button — instant reveal, no intro animation
   const startExperimentBtn = document.getElementById("startExperimentBtn");
   if (startExperimentBtn) {
     startExperimentBtn.addEventListener("click", () => {
       startExperimentBtn.style.display = "none";
+      document.body.classList.add("tooltips-off");
       // Reveal only the initial instruments needed for step 1
-      ["butter-block", "knife", "plate", "flask", "spatula", "weightingMachineWrapper"]
-        .forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.style.display = "block";
-        });
+      [
+        "butter-block",
+        "knife",
+        "plate",
+        "flask",
+        "spatula",
+        "weightingMachineWrapper",
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "block";
+      });
       experimentStep = 1;
       updateInstruction(1);
     });
@@ -350,9 +392,10 @@ window.jumpToStep = function(step) {
     knife.style.left = "80%";
     await wait(1000);
     knife.style.top = "75%";
-    console.log("Step 1 Complete: Butter sliced");  
-    butterUsed.innerText="5 gram";
+    console.log("Step 1 Complete: Butter sliced");
+    butterUsed.innerText = "5 gram";
     experimentStep = 2; // Next: Power Machine
+    console.log(`Updating instruction to step 2`);
     updateInstruction(2);
   });
 
@@ -360,6 +403,7 @@ window.jumpToStep = function(step) {
     if (experimentStep === 2) {
       weightingMachineScreen.innerText = "0.00g";
       experimentStep = 3; // Next: Place Empty Flask
+      console.log(`Updating instruction to step 3`);
       updateInstruction(3);
       console.log("Step 2 Complete: Machine On. Next: Place Flask (Step 3)");
     }
@@ -388,6 +432,7 @@ window.jumpToStep = function(step) {
       console.log("Step 3 Complete: Empty Flask Weighed");
 
       experimentStep = 4; // Next: Tare
+      console.log(`Updating instruction to step 4`);
       updateInstruction(4);
     }
     // STEP 6: Move Flask + Butter
@@ -398,6 +443,8 @@ window.jumpToStep = function(step) {
       // Lift both
       flask.style.top = "10.5%";
       butterSlice.style.top = "43.5%";
+      weightingMachineScreen.innerText = "0.00g";
+
       await wait(1000);
 
       // Move both
@@ -411,9 +458,10 @@ window.jumpToStep = function(step) {
 
       await wait(1000);
       console.log("Step 6 Complete: Filled Flask Weighed");
-      next1.style.display="block";
+      next1.style.display = "block";
 
       experimentStep = 7; // Next: Move to Water Bath
+      console.log(`Updating instruction to step 7`);
       updateInstruction(7);
     }
     // STEP 7 (Labeled 10 in logic for water bath)
@@ -429,9 +477,10 @@ window.jumpToStep = function(step) {
       flask.style.top = "21.5%";
       butterSlice.style.top = "53.5%";
       console.log("Step 10 Complete: Flask in Water Bath");
-     
+
       experimentStep = 12; // Next: Start Water Bath
-      updateInstruction(11);
+      console.log(`Updating instruction to step 12`);
+      updateInstruction(12);
     }
     // STEP 9: Move Melted Flask to Funnel Area
     else if (experimentStep === 9) {
@@ -467,11 +516,12 @@ window.jumpToStep = function(step) {
       console.log("Step 9 Complete: Butter Poured");
 
       experimentStep = 10; // Next: Add Diethyl Ether
+      console.log(`Updating instruction to step 10`);
       updateInstruction(10);
     }
-    // STEP 17: Move to Burette (Values from your logic)
-    else if (experimentStep === 17) {
-      console.log("Step 17: Scaling and Moving Flask under Burette");
+    // STEP 18: Move to Burette (Values from your logic)
+    else if (experimentStep === 18) {
+      console.log("Step 18: Scaling and Moving Flask under Burette");
       experimentStep = -1; // Lock UI
 
       // 1. Scale Down
@@ -489,8 +539,9 @@ window.jumpToStep = function(step) {
       flask.style.top = "48%";
 
       // Unlock next step (Titration)
-      experimentStep = 18;
-      updateInstruction(18);
+      experimentStep = 19;
+      console.log(`Updating instruction to step 19`);
+      updateInstruction(19);
     }
   });
 
@@ -498,6 +549,7 @@ window.jumpToStep = function(step) {
     if (experimentStep === 4) {
       weightingMachineScreen.innerText = "0.00g";
       experimentStep = 5; // Next: Spatula
+      console.log(`Updating instruction to step 5`);
       updateInstruction(5);
       console.log("Step 4 Complete: Tare Pressed");
     }
@@ -549,296 +601,283 @@ window.jumpToStep = function(step) {
 
     console.log("Step 5 Complete: Butter Added");
     experimentStep = 6; // Next: Weigh Filled Flask
-    
+    console.log(`Updating instruction to step 6`);
     updateInstruction(6);
   });
   waterBathPower.addEventListener("click", () => {
-  isWaterBathOn = !isWaterBathOn;
+    isWaterBathOn = !isWaterBathOn;
 
-  if (isWaterBathOn) {
-    currentTemp = 25; // room temp on power ON
-    waterBathPower.style.backgroundColor = "green";
-  } else {
-    waterBathPower.style.backgroundColor = "red";
+    if (isWaterBathOn) {
+      currentTemp = 25; // room temp on power ON
+      waterBathPower.style.backgroundColor = "green";
+    } else {
+      waterBathPower.style.backgroundColor = "red";
 
-    if (heatingInterval) {
-      clearInterval(heatingInterval);
-      heatingInterval = null;
-    }
-  }
-
-  updateWaterBathScreen();
-});
-tempUp.addEventListener("click", () => {
-  if (!isWaterBathOn) return;
-
-  if (setTemp < 100) {
-    setTemp++;
-    updateWaterBathScreen(); // 🔴 THIS WAS MISSING
-  }
-});
-
-tempDown.addEventListener("click", () => {
-  if (!isWaterBathOn) return;
-
-  if (setTemp > 25) {
-    setTemp--;
-    updateWaterBathScreen(); // 🔴 THIS WAS MISSING
-  }
-});
-
-waterBathStart.addEventListener("click", async () => {
-  if (experimentStep !== 12) return;
-
-  if (!isWaterBathOn) {
-    alert("Please turn on the water bath.");
-    return;
-  }
-
-  if (setTemp !== 50) {
-    alert("Please set the temperature to 50°C.");
-    return;
-  }
-
-  experimentStep = -1; // lock
-
-  /* ===== HEAT UNTIL SET TEMP ===== */
-  if (!heatingInterval) {
-    heatingInterval = setInterval(async() => {
-      if (currentTemp < setTemp) {
-        currentTemp++;
-        updateWaterBathScreen();
-      } 
-      else {
+      if (heatingInterval) {
         clearInterval(heatingInterval);
         heatingInterval = null;
-        console.log("Water bath reached 50°C");
-
-        // 🔥🔥🔥 **START MELTING IMMEDIATELY HERE** 🔥🔥🔥
-        await wait(500);
-        butterSlice.classList.add("reducing1");
-        butterMelted.style.display = "block";
-      
-       
-
-        butterMelted.classList.add("filling");
-        await wait(1000);
-        butterSlice.style.display = "none";
-         butterMelted.src = "./images/flaskButterWaterBath.png";
       }
-    }, 200);
-  }
-
-  // Wait until 50°C is reached
-  while (currentTemp < setTemp) {
-    await wait(300);
-  }
-
-  /* ===== SHOW & START 3-MIN TIMER (AFTER TEMP REACHED) ===== */
-  const timerBox = document.getElementById("waterBathCountdown");
-  const timeDisplay = document.getElementById("waterBathTime");
-  timerBox.classList.remove("hidden");
-
-  bathTimeRemaining = 60
-  if (timeDisplay) timeDisplay.innerText = "00:00";
-
-  bathTimerInterval = setInterval(() => {
-    bathTimeRemaining--;
-
-    const min = String(Math.floor(bathTimeRemaining / 60)).padStart(2, "0");
-    const sec = String(bathTimeRemaining % 60).padStart(2, "0");
-
-    if (timeDisplay) timeDisplay.innerText = `${min}:${sec}`;
-
-    if (bathTimeRemaining <= 0) {
-      clearInterval(bathTimerInterval);
-      bathTimerInterval = null;
-      timerBox.classList.add("hidden");
-
-      console.log("Water bath completed (1 minute reached)");
-
-      // 🔽 Now STOP melting and continue experiment
-      setTimeout(async () => {
-        butterSlice.classList.remove("reducing1");
-        butterMelted.classList.remove("filling");
-
-        // await wait(3000);
-       
-        flask.style.top = "-10%";
-        await wait(1000);
-        flask.style.left = "40%";
-        await wait(1000);
-        flask.style.top = "55%";
-
-        experimentStep = 13;
-        next3.style.display = "block";
-        
-        updateInstruction(12);
-      }, 5);
-    }
-  }, 100);
-});
-
-
-
-  diethylEther.addEventListener("click", async () => {
-
-
-    
-    if (experimentStep === 9) {
-    experimentStep = -1; // Lock
-
-    diethylEther.style.top = "5%";
-    await wait(1000);
-    diethylEther.style.left = "44%";
-    await wait(1000);
-    diethylEther.style.top = "calc(67% - 18vw)";
-    diethylEther.style.transform = "rotate(-90deg)";
-    await wait(1000);
-    diethylEther.style.transform = "rotate(-100deg)";
-    await wait(2000);
-
-    if (diethylEtherSolution) diethylEtherSolution.classList.add("reducing1");
-    if (bottleSoltiuonPouring) {
-      bottleSoltiuonPouring.style.display = "block";
-      bottleSoltiuonPouring.classList.add("reducing2");
     }
 
-    await wait(1200);
+    updateWaterBathScreen();
+  });
+  tempUp.addEventListener("click", () => {
+    if (!isWaterBathOn) return;
 
-    if (pouring) {
-      pouring.style.display = "block";
-      pouring.classList.add("pouring-animation");
+    if (setTemp < 100) {
+      setTemp++;
+      updateWaterBathScreen(); // 🔴 THIS WAS MISSING
     }
-
-    await wait(500);
-    bottleSoltiuonPouring.classList.remove("reducing2");
-    void bottleSoltiuonPouring.offsetWidth;
-    bottleSoltiuonPouring.classList.add("reverseReducing");
-
-    if (butterMelted) {
-      butterMelted.style.display = "block";
-      butterMelted.classList.add("filling");
-    }
-    await wait(2000);
-
-    diethylEther.style.transform = "rotate(0deg)";
-    diethylEther.style.top = "40%";
-    diethylEther.style.left = "65%";
-
-    console.log("Step 9 Complete: Diethyl Ether Added");
-   
-    experimentStep = 10;
-    updateInstruction(9);
-  } 
-  else if(experimentStep === 8){
-    console.log("experiment step for pouring inside 50ml")
-    experimentStep = -1;
-    
-    diethylEther.style.top = "5%";
-    await wait(1000);
-    diethylEther.style.left = "62%";
-    await wait(1000);
-    diethylEther.style.top = "calc(72% - 18vw)";
-    diethylEther.style.transform = "rotate(-90deg)";
-    await wait(1000);
-    diethylEther.style.transform = "rotate(-100deg)";
-    await wait(2000);
-
-    if (diethylEtherSolution) diethylEtherSolution.classList.add("reducing1");
-    if (bottleSoltiuonPouring) {
-      bottleSoltiuonPouring.style.display = "block";
-      bottleSoltiuonPouring.classList.add("reducing2");
-    }
-
-    await wait(1200);
-
-    if (cylinderPouring) {
-      cylinderPouring.style.display = "block";
-      cylinderPouring.classList.add("pouring-animation");
-    }
-
-    await wait(500);
-    bottleSoltiuonPouring.classList.remove("reducing2");
-    void bottleSoltiuonPouring.offsetWidth;
-    bottleSoltiuonPouring.classList.add("reverseReducing");
-
-    if (butterMelted) {
-      cylinderSolution.style.display = "block";
-    cylinderSolution.classList.add("filling");
-    }
-    await wait(2000);
-
-    diethylEther.style.transform = "rotate(0deg)";
-    diethylEther.style.top = "40%";
-    diethylEther.style.left = "75%";
-
-    console.log("Step 8 Complete: Diethyl Ether Added");
-    // next2.style.display="block";
-    experimentStep = 9;
-    updateInstruction(9);
-  }
-
-    
   });
 
-  measuringCylinder.addEventListener("click", async () =>{
+  tempDown.addEventListener("click", () => {
+    if (!isWaterBathOn) return;
 
-    if(experimentStep === 9){
-      cylinderSolution.style.display="block";
+    if (setTemp > 25) {
+      setTemp--;
+      updateWaterBathScreen(); // 🔴 THIS WAS MISSING
+    }
+  });
+
+  waterBathStart.addEventListener("click", async () => {
+    if (experimentStep !== 12) return;
+
+    if (!isWaterBathOn) {
+      alert("Please turn on the water bath.");
+      return;
+    }
+
+    if (setTemp !== 50) {
+      alert("Please set the temperature to 50°C.");
+      return;
+    }
+
+    experimentStep = -1; // lock
+
+    /* ===== HEAT UNTIL SET TEMP ===== */
+    if (!heatingInterval) {
+      heatingInterval = setInterval(async () => {
+        if (currentTemp < setTemp) {
+          currentTemp++;
+          updateWaterBathScreen();
+        } else {
+          clearInterval(heatingInterval);
+          heatingInterval = null;
+          console.log("Water bath reached 50°C");
+
+          // 🔥🔥🔥 **START MELTING IMMEDIATELY HERE** 🔥🔥🔥
+          await wait(500);
+          butterSlice.classList.add("reducing1");
+          butterMelted.style.display = "block";
+
+          butterMelted.classList.add("filling");
+          await wait(1000);
+          butterSlice.style.display = "none";
+          butterMelted.src = "./images/flaskButterWaterBath.png";
+        }
+      }, 200);
+    }
+
+    // Wait until 50°C is reached
+    while (currentTemp < setTemp) {
+      await wait(300);
+    }
+
+    /* ===== SHOW & START 3-MIN TIMER (AFTER TEMP REACHED) ===== */
+    const timerBox = document.getElementById("waterBathCountdown");
+    const timeDisplay = document.getElementById("waterBathTime");
+    timerBox.classList.remove("hidden");
+
+    bathTimeRemaining = 60;
+    if (timeDisplay) timeDisplay.innerText = "01:00";
+
+    bathTimerInterval = setInterval(() => {
+      bathTimeRemaining--;
+
+      const min = String(Math.floor(bathTimeRemaining / 60)).padStart(2, "0");
+      const sec = String(bathTimeRemaining % 60).padStart(2, "0");
+
+      if (timeDisplay) timeDisplay.innerText = `${min}:${sec}`;
+
+      if (bathTimeRemaining <= 0) {
+        clearInterval(bathTimerInterval);
+        bathTimerInterval = null;
+        timerBox.classList.add("hidden");
+
+        console.log("Water bath completed (1 minute reached)");
+
+        // 🔽 Now STOP melting and continue experiment
+        setTimeout(async () => {
+          butterSlice.classList.remove("reducing1");
+          butterMelted.classList.remove("filling");
+
+          // await wait(3000);
+
+          flask.style.top = "-10%";
+          await wait(1000);
+          flask.style.left = "40%";
+          await wait(1000);
+          flask.style.top = "55%";
+
+          experimentStep = 13;
+          next3.style.display = "block";
+          console.log(`Updating instruction to step 13`);
+          updateInstruction(13);
+        }, 5);
+      }
+    }, 100);
+  });
+
+  diethylEther.addEventListener("click", async () => {
+    if (experimentStep === 9) {
+      experimentStep = -1; // Lock
+
+      diethylEther.style.top = "5%";
+      await wait(1000);
+      diethylEther.style.left = "44%";
+      await wait(1000);
+      diethylEther.style.top = "calc(67% - 18vw)";
+      diethylEther.style.transform = "rotate(-90deg)";
+      await wait(1000);
+      diethylEther.style.transform = "rotate(-100deg)";
+      await wait(2000);
+
+      if (diethylEtherSolution) diethylEtherSolution.classList.add("reducing1");
+      if (bottleSoltiuonPouring) {
+        bottleSoltiuonPouring.style.display = "block";
+        bottleSoltiuonPouring.classList.add("reducing2");
+      }
+
+      await wait(1200);
+
+      if (pouring) {
+        pouring.style.display = "block";
+        pouring.classList.add("pouring-animation");
+      }
+
+      await wait(500);
+      bottleSoltiuonPouring.classList.remove("reducing2");
+      void bottleSoltiuonPouring.offsetWidth;
+      bottleSoltiuonPouring.classList.add("reverseReducing");
+
+      if (butterMelted) {
+        butterMelted.style.display = "block";
+        butterMelted.classList.add("filling");
+      }
+      await wait(2000);
+
+      diethylEther.style.transform = "rotate(0deg)";
+      diethylEther.style.top = "40%";
+      diethylEther.style.left = "65%";
+
+      console.log("Step 9 Complete: Diethyl Ether Added");
+
+      experimentStep = 10;
+      console.log(`Updating instruction to step 10`);
+      updateInstruction(10);
+    } else if (experimentStep === 8) {
+      console.log("experiment step for pouring inside 50ml");
+      experimentStep = -1;
+
+      diethylEther.style.top = "5%";
+      await wait(1000);
+      diethylEther.style.left = "62%";
+      await wait(1000);
+      diethylEther.style.top = "calc(72% - 18vw)";
+      diethylEther.style.transform = "rotate(-90deg)";
+      await wait(1000);
+      diethylEther.style.transform = "rotate(-100deg)";
+      await wait(2000);
+
+      if (diethylEtherSolution) diethylEtherSolution.classList.add("reducing1");
+      if (bottleSoltiuonPouring) {
+        bottleSoltiuonPouring.style.display = "block";
+        bottleSoltiuonPouring.classList.add("reducing2");
+      }
+
+      await wait(1200);
+
+      if (cylinderPouring) {
+        cylinderPouring.style.display = "block";
+        cylinderPouring.classList.add("pouring-animation");
+      }
+
+      await wait(500);
+      bottleSoltiuonPouring.classList.remove("reducing2");
+      void bottleSoltiuonPouring.offsetWidth;
+      bottleSoltiuonPouring.classList.add("reverseReducing");
+
+      if (butterMelted) {
+        cylinderSolution.style.display = "block";
+        cylinderSolution.classList.add("filling");
+      }
+      await wait(2000);
+
+      diethylEther.style.transform = "rotate(0deg)";
+      diethylEther.style.top = "40%";
+      diethylEther.style.left = "75%";
+
+      console.log("Step 8 Complete: Diethyl Ether Added");
+      // next2.style.display="block";
+      experimentStep = 9;
+      console.log(`Updating instruction to step 9`);
+      updateInstruction(9);
+    }
+  });
+
+  measuringCylinder.addEventListener("click", async () => {
+    if (experimentStep === 9) {
+      cylinderSolution.style.display = "block";
       experimentStep = -2;
 
-      measuringCylinder.style.top="20%";
+      measuringCylinder.style.top = "20%";
       await wait(1000);
-      measuringCylinder.style.left="48.5%";
+      measuringCylinder.style.left = "48.5%";
       await wait(1000);
-      measuringCylinder.style.top="32%";
+      measuringCylinder.style.top = "32%";
       measuringCylinder.style.transform = "rotate(-98deg)";
       await wait(1000);
       cylinderSolution.classList.add("reducing1");
-    
-    if (bottleSoltiuonPouring) {
-      bottleSoltiuonPouring.style.display = "block";
-      bottleSoltiuonPouring.classList.add("reducing2");
-    }
 
-    // await wait(500);
+      if (bottleSoltiuonPouring) {
+        bottleSoltiuonPouring.style.display = "block";
+        bottleSoltiuonPouring.classList.add("reducing2");
+      }
 
-    if (pouring) {
-      pouring.style.display = "block";
-      pouring.classList.add("pouring-animation");
-    }
+      // await wait(500);
 
-    await wait(500);
-    bottleSoltiuonPouring.classList.remove("reducing2");
-    void bottleSoltiuonPouring.offsetWidth;
-    bottleSoltiuonPouring.classList.add("reverseReducing");
+      if (pouring) {
+        pouring.style.display = "block";
+        pouring.classList.add("pouring-animation");
+      }
 
-    if (butterMelted) {
-      butterMelted.style.display = "block";
-      butterMelted.classList.add("filling");
-    }
-    await wait(2000);
-    measuringCylinder.style.transform="rotate(0deg)";
-    await wait(1000);
+      await wait(500);
+      bottleSoltiuonPouring.classList.remove("reducing2");
+      void bottleSoltiuonPouring.offsetWidth;
+      bottleSoltiuonPouring.classList.add("reverseReducing");
 
-    measuringCylinder.style.left="60%";
-    await wait(1000);
-    measuringCylinder.style.top="60%";
-    next2.style.display="block";
-    experimentStep = 10;
-    updateInstruction(9);
+      if (butterMelted) {
+        butterMelted.style.display = "block";
+        butterMelted.classList.add("filling");
+      }
+      await wait(2000);
+      measuringCylinder.style.transform = "rotate(0deg)";
+      await wait(1000);
+
+      measuringCylinder.style.left = "60%";
+      await wait(1000);
+      measuringCylinder.style.top = "60%";
+      next2.style.display = "block";
+      experimentStep = 10;
+      console.log(`Updating instruction to step 10`);
+      updateInstruction(10);
       // measuringCylinder.style.transform = "rotate(-90deg)";
       // await wait(1500);
       //   measuringCylinder.style.left="47%";
 
       // measuringCylinder.style.transform = "rotate(-120deg)";
-
-
-
     }
-    
-  })
+  });
 
   pipette.addEventListener("click", async () => {
     pipette.style.transform = "rotate(0deg)";
@@ -874,9 +913,10 @@ waterBathStart.addEventListener("click", async () => {
       dropCount++;
       if (dropCount >= 2) {
         console.log("Two drops added. Moving to next step.");
-        next4.style.display="block";
+        next4.style.display = "block";
         experimentStep = 16;
-        updateInstruction(15);
+        console.log(`Updating instruction to step 17`);
+        updateInstruction(17);
       }
 
       isDropping = false;
@@ -889,7 +929,8 @@ waterBathStart.addEventListener("click", async () => {
       pipette.style.transform = "rotate(90deg)";
 
       experimentStep = 17;
-      updateInstruction(16);
+      console.log(`Updating instruction to step 17`);
+      updateInstruction(17);
     }
     // --- STEP 13: Reagent Logic ---
     else if (experimentStep === 14) {
@@ -902,12 +943,19 @@ waterBathStart.addEventListener("click", async () => {
       await wait(1000);
       petroleumEtherSolution.classList.add("reducing");
       pipetteDiEthylEther.style.display = "block";
-      pipetteDiEthylEther.classList.remove("filling", "reducing", "reducing1", "reducing2");
+      pipetteDiEthylEther.classList.remove(
+        "filling",
+        "reducing",
+        "reducing1",
+        "reducing2",
+      );
       void pipetteDiEthylEther.offsetWidth;
       pipetteDiEthylEther.classList.add("filling");
+      pipette.style.zIndex = 1;
       await wait(2000);
-      
+
       // Pour into funnel/flask
+
       pipette.style.top = "-10%";
       await wait(1000);
       pipette.style.left = "43%";
@@ -915,11 +963,12 @@ waterBathStart.addEventListener("click", async () => {
       pipette.style.top = "20%";
       pipetteDiEthylEther.classList.remove("filling");
       await wait(1200);
-      
+
       pipettePouring.style.display = "none";
       console.log(experimentStep);
-      experimentStep = 15; 
-      updateInstruction(14);
+      experimentStep = 15;
+      console.log(`Updating instruction to step 15`);
+      updateInstruction(15);
       console.log(experimentStep);
     }
   });
@@ -941,6 +990,7 @@ waterBathStart.addEventListener("click", async () => {
     await wait(1000);
     porcelainDish.style.top = originalTop;
     experimentStep = 14;
+    console.log(`Updating instruction to step 14`);
     updateInstruction(14);
   });
 
@@ -986,12 +1036,12 @@ waterBathStart.addEventListener("click", async () => {
   function setupScene(step) {
     if (step === "start") {
       if (experimentStep !== 7) return;
-      weightingMachine.style.display="none";
-      measuringCylinder.style.display="block";
-      next1.style.display="none";
-      knife.style.display="none";
-      butter.style.display="none";
-      spatula.style.display="none";
+      weightingMachine.style.display = "none";
+      measuringCylinder.style.display = "block";
+      next1.style.display = "none";
+      knife.style.display = "none";
+      butter.style.display = "none";
+      spatula.style.display = "none";
       petroleumEther.style.display = "none";
       // stand.style.display = "block";
       waterBath.style.display = "none";
@@ -1003,12 +1053,13 @@ waterBathStart.addEventListener("click", async () => {
       weightingMachineWrapper.style.display = "block";
       flask.style.display = "block";
       experimentStep = 8;
+      console.log(`Updating instruction to step 8`);
       updateInstruction(8);
-    } 
-    else if (step === "nextButton2") {
+    } else if (step === "nextButton2") {
       if (experimentStep !== 10) return;
-      
-      next2.style.display="none";
+
+      next2.style.display = "none";
+      measuringCylinder.style.display = "none";
       waterBath.style.display = "block";
       diethylEther.style.display = "none";
       petroleumEther.style.display = "none";
@@ -1025,12 +1076,12 @@ waterBathStart.addEventListener("click", async () => {
       }
 
       experimentStep = 11;
-      updateInstruction(10);
-    } 
-    else if (step === "12") {
+      console.log(`Updating instruction to step 11`);
+      updateInstruction(11);
+    } else if (step === "12") {
       if (experimentStep !== 13) return;
-      next3.style.display="none";
-      waterBath.style.display="none"
+      next3.style.display = "none";
+      waterBath.style.display = "none";
       pipette.style.display = "block";
       // diethylEther.style.display = "block";
       petroleumEther.style.display = "block";
@@ -1040,36 +1091,40 @@ waterBathStart.addEventListener("click", async () => {
       if (timerBox) timerBox.classList.add("hidden");
 
       experimentStep = 14;
-      updateInstruction(13);
+      console.log(`Updating instruction to step 14`);
+      updateInstruction(14);
       console.log(experimentStep);
-    } 
-    else if (step === "nextButton4") {
+    } else if (step === "nextButton4") {
       // Direct testing enabled as per your Step 17 requirement
       experimentStep = -1;
-      pipetteDiEthylEther.style.display="none";
-      pipette.style.display="none";
-      next4.style.display="none";
-      weightingMachine.style.display="none";
+      pipetteDiEthylEther.style.display = "none";
+      pipette.style.display = "none";
+      next4.style.display = "none";
+      weightingMachine.style.display = "none";
       stand.style.display = "block";
       burette.style.display = "block";
       buretteSolution.style.display = "block";
       buretteNozzel.style.display = "block";
       flask.style.display = "block";
-      
+
       // Default position before Step 17 animation
       flask.style.top = "55%";
       flask.style.left = "40%";
       flask.style.transform = "scale(1)";
 
-      experimentStep = 17;
-      updateInstruction(17);
+      // After pressing Next, we are now at step 18: Flask under Burette
+      experimentStep = 18;
+      console.log(`Updating instruction to step 18`);
+      updateInstruction(18);
     }
   }
-  console.log(btnNext0,"btnNext0");
+  console.log(btnNext0, "btnNext0");
   if (btnNext3) btnNext3.addEventListener("click", () => setupScene("12"));
   if (btnNext0) btnNext0.addEventListener("click", () => setupScene("start"));
-  if (btnNext2) btnNext2.addEventListener("click", () => setupScene("nextButton2"));
-  if (btnNext4) btnNext4.addEventListener("click", () => setupScene("nextButton4"));
+  if (btnNext2)
+    btnNext2.addEventListener("click", () => setupScene("nextButton2"));
+  if (btnNext4)
+    btnNext4.addEventListener("click", () => setupScene("nextButton4"));
 
   const observationContainer = document.querySelector(".observation");
   const observationBtn = elementId("observationBtn");
@@ -1088,7 +1143,12 @@ waterBathStart.addEventListener("click", async () => {
   if (buretteNozzel) {
     buretteNozzel.addEventListener("click", async () => {
       // Only allow during titration step
-      if (experimentStep !== 18) return;
+      if (experimentStep !== 19) {
+        console.log(
+          `Burette nozzle click blocked, current step = ${experimentStep} (expected 19)`,
+        );
+        return;
+      }
 
       /* ======================
          OPEN BURETTE
@@ -1120,31 +1180,36 @@ waterBathStart.addEventListener("click", async () => {
           naohUsed.innerText = `${buretteDropCount * 2.5} ml`;
           console.log(`Drop count: ${buretteDropCount}`);
 
+          // Reduce burette solution level visibly (1.75 per drop)
+          const reductionPercent = buretteDropCount * 1.75;
+          if (buretteSolution) {
+            buretteSolution.style.clipPath = `inset(${reductionPercent}% 0% 0% 0%)`;
+          }
+
           // ENDPOINT (ONLY VISUAL + CALC, NO STOP)
           if (buretteDropCount === 3) {
             console.log("Endpoint reached (color change)");
 
             if (butterMelted) {
-              butterMelted.style.filter =
-                "hue-rotate(270deg) saturate(3)";
+              butterMelted.style.filter = "hue-rotate(270deg) saturate(3)";
             }
 
             await wait(800);
-
-            updateInstruction(19);
           }
 
           isDropping = false;
         }, 1200); // continuous flow
-      }
+      } else {
 
       /* ======================
          CLOSE BURETTE (MANUAL)
       ======================= */
-      else {
         buretteOpen = false;
         buretteNozzel.style.transform = "rotate(0deg)";
         console.log("Burette closed manually");
+        experimentStep = 20;
+        console.log(`Updating instruction to step 20`);
+        updateInstruction(20);
 
         if (buretteInterval) {
           clearInterval(buretteInterval);
@@ -1159,103 +1224,113 @@ waterBathStart.addEventListener("click", async () => {
     });
   }
 
-
   // --- SHOW CALCULATION MODAL FUNCTION ---
-//   function showCalculation() {
-//   console.log("SHOW CALC FUNCTION TRIGGERED!");
+  //   function showCalculation() {
+  //   console.log("SHOW CALC FUNCTION TRIGGERED!");
 
-//   // --- ENSURE MODAL EXISTS ---
-//   let modal = document.getElementById("calcModal");
+  //   // --- ENSURE MODAL EXISTS ---
+  //   let modal = document.getElementById("calcModal");
 
-//   if (!modal) {
-//     modal = document.createElement("div");
-//     modal.id = "calcModal";
-//     modal.classList.add("calcModal");
-//     modal.style.position = "fixed";
-//     modal.style.top = "0";
-//     modal.style.left = "0";
-//     modal.style.width = "100%";
-//     modal.style.height = "100%";
-//     modal.style.background = "rgba(0,0,0,0.5)";
-//     modal.style.display = "flex";
-//     modal.style.justifyContent = "center";
-//     modal.style.alignItems = "center";
-//     modal.style.zIndex = "5000";
+  //   if (!modal) {
+  //     modal = document.createElement("div");
+  //     modal.id = "calcModal";
+  //     modal.classList.add("calcModal");
+  //     modal.style.position = "fixed";
+  //     modal.style.top = "0";
+  //     modal.style.left = "0";
+  //     modal.style.width = "100%";
+  //     modal.style.height = "100%";
+  //     modal.style.background = "rgba(0,0,0,0.5)";
+  //     modal.style.display = "flex";
+  //     modal.style.justifyContent = "center";
+  //     modal.style.alignItems = "center";
+  //     modal.style.zIndex = "5000";
 
-//     modal.innerHTML = `
-//       <div style="background:white;padding:20px;border-radius:10px;width:420px;text-align:center;">
-//         <h2>Calculation</h2>
-//         <p>Volume of NaOH used (V): <span id="valV">0.0</span> ml</p>
+  //     modal.innerHTML = `
+  //       <div style="background:white;padding:20px;border-radius:10px;width:420px;text-align:center;">
+  //         <h2>Calculation</h2>
+  //         <p>Volume of NaOH used (V): <span id="valV">0.0</span> ml</p>
 
-//         <div style="margin-top:15px;padding:10px;border:1px solid #bbb;">
-//           <p id="calcStep1"></p>
-//           <h3 id="calcResult" style="color:green;"></h3>
-//         </div>
+  //         <div style="margin-top:15px;padding:10px;border:1px solid #bbb;">
+  //           <p id="calcStep1"></p>
+  //           <h3 id="calcResult" style="color:green;"></h3>
+  //         </div>
 
-//         <button id="btnRestart"
-//           style="margin-top:20px;padding:10px 20px;background:#007bff;color:white;border:none;border-radius:6px;cursor:pointer;">
-//           Restart Experiment
-//         </button>
-//       </div>
-//     `;
+  //         <button id="btnRestart"
+  //           style="margin-top:20px;padding:10px 20px;background:#007bff;color:white;border:none;border-radius:6px;cursor:pointer;">
+  //           Restart Experiment
+  //         </button>
+  //       </div>
+  //     `;
 
-//     document.body.appendChild(modal);
-//   }
+  //     document.body.appendChild(modal);
+  //   }
 
-//   // --- APPLY VALUES ---
-//   let V = 2.50;   // TEMPORARY (you will update later)
-//   let N = 0.1;
-//   let W = 5.0;
-//   let factor = 28.2;
+  //   // --- APPLY VALUES ---
+  //   let V = 2.50;   // TEMPORARY (you will update later)
+  //   let N = 0.1;
+  //   let W = 5.0;
+  //   let factor = 28.2;
 
-//   let result = (V * N * factor) / W;
+  //   let result = (V * N * factor) / W;
 
-//   document.getElementById("valV").innerText = V.toFixed(2);
-//   document.getElementById("calcStep1").innerText =
-//     `${V.toFixed(2)} × 0.1 × 28.2 / 5 = ${result.toFixed(3)}`;
-//   document.getElementById("calcResult").innerText =
-//     `Result: ${result.toFixed(3)} % FFA`;
+  //   document.getElementById("valV").innerText = V.toFixed(2);
+  //   document.getElementById("calcStep1").innerText =
+  //     `${V.toFixed(2)} × 0.1 × 28.2 / 5 = ${result.toFixed(3)}`;
+  //   document.getElementById("calcResult").innerText =
+  //     `Result: ${result.toFixed(3)} % FFA`;
 
-//   // --- SHOW MODAL ---
-//   modal.style.display = "flex";
+  //   // --- SHOW MODAL ---
+  //   modal.style.display = "flex";
 
-//   // --- RESTART ---
-//   document.getElementById("btnRestart").onclick = () => location.reload();
-// }
-function showCalculation() {
-  const modal = document.getElementById("calcModal");
+  //   // --- RESTART ---
+  //   document.getElementById("btnRestart").onclick = () => location.reload();
+  // }
+  function showCalculation() {
+    const modal = document.getElementById("calcModal");
 
-  if (!modal) {
-    console.error("calcModal not found");
-    return;
+    if (!modal) {
+      console.error("calcModal not found");
+      return;
+    }
+
+    // === SAMPLE VALUES ===
+    let V = dropVolume;
+    console.log("Volume V used in calculation:", V);
+    let N = 0.1;
+    let W = 5.0;
+    let factor = 0.282;
+
+    calResult = ((V * N * factor) / W) * 100;
+
+    // === UPDATE UI ===
+    document.getElementById("valV").innerText = V.toFixed(2);
+
+    // === SHOW MODAL ===
+    modal.classList.remove("modal-hidden");
+
+    // === RESULT BUTTON ===
+    const btnResult = document.getElementById("btnResult");
+    const resultDisplay = document.getElementById("resultDisplay");
+    const resultText = document.getElementById("resultText");
+    const btnRestart = document.getElementById("btnRestart");
+
+    if (btnResult) {
+      btnResult.addEventListener("click", () => {
+        resultDisplay.style.display = "block";
+        resultText.innerText = `FFA content (% Oleic acid) = ${calResult.toFixed(3)} %`;
+        btnRestart.style.display = "block";
+      });
+    }
+
+    // === RESTART BUTTON ===
+    if (btnRestart) {
+      btnRestart.onclick = () => {
+        location.reload();
+      };
+    }
   }
-
-  // === SAMPLE VALUES (you can change later) ===
-  let V = dropVolume;
-  console.log("Volume V used in calculation:", V);
-  let N = 0.1;
-  let W = 5.0;
-  let factor = 28.2;
-
-  calResult = (V * N * factor) / W;
-
-  // === UPDATE UI ===
-  document.getElementById("valV").innerText = V.toFixed(2);
-  // document.getElementById("calcStep1").innerText =`${V.toFixed(2)} × 0.1 × 28.2 / 5 = ${result.toFixed(3)}`;
-  // 
-
-  // === SHOW MODAL ===
-  modal.classList.remove("modal-hidden");
-
-  // === RESTART BUTTON ===
-  document.getElementById("btnRestart").onclick = () => {
-    location.reload();
-  };
-}
-
-
 });
-
 
 const startExperimentBtn = document.getElementById("startExperimentBtn");
 if (startExperimentBtn) {
@@ -1271,14 +1346,14 @@ if (startExperimentBtn) {
   });
 }
 
-//  BODY-LEVEL TOOLTIP for butter (bypasses container overflow:hidden) 
-(function() {
+//  BODY-LEVEL TOOLTIP for butter (bypasses container overflow:hidden)
+(function () {
   const tip = document.getElementById("global-tooltip");
   if (!tip) return;
 
   const butterTargets = [
-    { id: "butter-block",   label: "Butter Sample" },
-    { id: "butter-slice-1", label: "Butter Slice"  },
+    { id: "butter-block", label: "Butter Sample" },
+    { id: "butter-slice-1", label: "Butter Slice" },
   ];
 
   let hideTimer = null;
@@ -1287,26 +1362,32 @@ if (startExperimentBtn) {
     clearTimeout(hideTimer);
     tip.textContent = label;
     tip.style.left = x + "px";
-    tip.style.top  = y + "px";
+    tip.style.top = y + "px";
     requestAnimationFrame(() => {
       const w = tip.offsetWidth;
       const h = tip.offsetHeight;
-      tip.style.left = (x - w / 2) + "px";
-      tip.style.top  = (y - h - 16) + "px";
+      tip.style.left = x - w / 2 + "px";
+      tip.style.top = y - h - 16 + "px";
       tip.classList.add("visible");
     });
   }
 
   function hideTip() {
     tip.classList.remove("visible");
-    hideTimer = setTimeout(() => { tip.textContent = ""; }, 300);
+    hideTimer = setTimeout(() => {
+      tip.textContent = "";
+    }, 300);
   }
 
-  butterTargets.forEach(function(item) {
+  butterTargets.forEach(function (item) {
     const el = document.getElementById(item.id);
     if (!el) return;
-    el.addEventListener("mouseenter", function(e) { showTip(item.label, e.clientX, e.clientY); });
-    el.addEventListener("mousemove",  function(e) { showTip(item.label, e.clientX, e.clientY); });
+    el.addEventListener("mouseenter", function (e) {
+      showTip(item.label, e.clientX, e.clientY);
+    });
+    el.addEventListener("mousemove", function (e) {
+      showTip(item.label, e.clientX, e.clientY);
+    });
     el.addEventListener("mouseleave", hideTip);
   });
 })();
