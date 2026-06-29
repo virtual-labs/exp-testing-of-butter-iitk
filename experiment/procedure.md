@@ -23,4 +23,5 @@ Where,<br>
 V = Volume of NaOH used (ml)<br>
 N = Normality of NaOH solution (0.1 N)<br>
 W = Weight of butter sample (g)<br>
-0.282 = Milliequivalent weight of oleic acid.  <br>
+0.282 = Milliequivalent weight of oleic acid.<br>
+<image src="images\image_2.png"><br>
