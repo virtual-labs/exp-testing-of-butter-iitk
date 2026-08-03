@@ -2,32 +2,82 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "What does a high FFA content in butter indicate?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Freshness",
+        "b": "High moisture",
+        "c": "Rancidity",
+        "d": "High protein"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "a": "Explanation 1",
         "b": "Explanation 2",
         "c": "Explanation 2",
         "d": "Explanation 2"
       },
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "Which solvent is used to dissolve butter during FFA determination?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Water",
+        "b": "Neutralized ethanol",
+        "c": "Acetone",
+        "d": "Ether"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which indicator is used in FFA determination?",
+      "answers": {
+        "a": "Methyl orange",
+        "b": "Phenolphthalein",
+        "c": "Starch",
+        "d": "Bromothymol blue"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "The titration is carried out using which solution?",
+      "answers": {
+        "a": "0.1 N HCl",
+        "b": "0.1 N NaOH",
+        "c": "0.5 N NaCl",
+        "d": "Distilled water"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },{
+      "question": "The endpoint of titration is indicated by:",
+      "answers": {
+        "a": "Blue color",
+        "b": "Yellow color",
+        "c": "Pale pink color",
+        "d": "Green color"
+      },
+      "explanations": {
+        "a": "Explanation 1",
         "b": "Explanation 2",
         "c": "Explanation 2",
         "d": "Explanation 2"
