@@ -1,0 +1,90 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "What is the weight of butter sample taken for analysis?",
+      "answers": {
+        "a": "2g",
+        "b": "5g",
+        "c": "10g",
+        "d": "15g"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "At what temperature is the sample heated for dissolution?",
+      "answers": {
+        "a": "25°C",
+        "b": "37°C",
+        "c": "50°C",
+        "d": "80°C"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "The factor 0.282 represents:",
+      "answers": {
+        "a": "Molecular weight of NaOH",
+        "b": "Normality factor",
+        "c": "Milliequivalent weight of oleic acid",
+        "d": "Density of butter"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "FFA is generally expressed as percentage of:",
+      "answers": {
+        "a": "Stearic acid",
+        "b": "Oleic acid",
+        "c": "Palmitic acid",
+        "d": "Lactic acid"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Increase in FFA content during storage is mainly due to:",
+      "answers": {
+        "a": "Freezing",
+        "b": "Hydrolysis and oxidation",
+        "c": "Filtration",
+        "d": "Pasteurization"
+      },
+      "explanations": {
+        "a": "Explanation 1",
+        "b": "Explanation 2",
+        "c": "Explanation 2",
+        "d": "Explanation 2"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    }
+  ]
+}

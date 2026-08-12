@@ -1,0 +1,361 @@
+<!DOCTYPE html>  
+<!-- complete code -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Butter Analysis</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main id="container">
+    <!-- LEFT SIDE -->
+    <!-- INTRO OVERLAY -->
+
+
+<div id="calcModal" class="modal-hidden">
+  <div class="chalkboard">
+    <h2>Observation Table</h2>
+
+    <div class="chalk-content">
+
+      <!-- Observation Table -->
+      <table class="obs-table">
+        <thead>
+          <tr>
+            <th>Butter sample</th>
+            <th>Vol. of NaOH used (ml)<br>(V)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S1</td>
+            <td id="valV">--</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- FFA Line with Answer Box INLINE -->
+      <div class="result-line">
+        FFA content (% Oleic acid) =
+
+        <!-- Your Answer Box Used Here -->
+        <div class="answer-box">
+          <input type="number" id="userAnswer" placeholder="Enter your answer (%)" />
+          <button id="checkBtn" class="chalk-btn">Check Your Answer</button>
+          <div id="answerCheck"></div>
+        </div>
+
+        <button id="formulaButton" class="chalk-btn">Formula</button>
+
+       <span id="answerStatus">
+  <span id="wrongText" class="answer-option">Wrong answer!</span> /
+  <span id="rightText" class="answer-option">Right answer!</span>
+</span>
+      </div>
+
+      <!-- Formula Section -->
+      <div id="formulaSection" class="formula-box" style="display:none;">
+
+        <div style="text-align:center; margin-top:20px;">
+          <i>FFA content (% Oleic acid)</i> =
+          <span class="fraction">
+            <span class="numerator">V × N × 0.282</span>
+            <span class="fraction-line"></span>
+            <span class="denominator">W</span>
+          </span>
+          × 100
+        </div>
+
+        <div class="formula-where" style="margin-top:20px;">
+          <p>Where,</p>
+          <p><i>V</i> = Volume of NaOH used (ml)</p>
+          <p><i>N</i> = Normality of the NaOH solution (0.1N)</p>
+          <p><i>W</i> = Weight of the butter sample (g)</p>
+          <p>0.282 = The milliequivalent weight of oleic acid</p>
+        </div>
+
+      </div>
+
+      <button id="btnResult" class="chalk-btn">Result</button>
+      <div id="resultDisplay" style="display:none;">
+        <p id="resultText"></p>
+      </div>
+      <button id="btnRestart" style="display:none;">Restart Experiment</button>
+
+    </div>
+  </div>
+</div>
+
+    <div id="left">
+      <!--  -->
+
+      <div id="elementLabel" class="label-hidden"></div>
+
+
+      <!-- EXPERIMENT INFO ON GREENBOARD -->
+      <!-- EXPERIMENT INFORMATION TEXT -->
+      <!-- <div id="experimentInfo">
+
+        <p id="labName">Dairy Technology Lab</p>
+
+        <p id="experimentNumber">Experiment No. 6</p>
+
+        <p id="experimentAim">
+          Aim: To determine the % of free fatty acids in butter by titration.
+        </p>
+
+      </div> -->
+
+      <!-- SLIDER TOGGLE BUTTON -->
+      <button id="stepToggleBtn">☰</button>
+
+      <!-- SLIDING STEP SIDEBAR -->
+      <div id="stepSidebar">
+        <h3>Experiment Progress</h3>
+
+        <ul id="stepList">
+          <li data-step="1">Cut butter slice</li>
+          <li data-step="2">Power on weighing machine</li>
+          <li data-step="3">Weigh empty flask</li>
+          <li data-step="4">Tare the balance</li>
+          <li data-step="5">Add butter to flask</li>
+          <li data-step="6">Weigh filled flask</li>
+          <li data-step="7">Proceed to solvent addition</li>
+          <li data-step="8">Add neutralized ethanol</li>
+          <li data-step="9">Proceed to water bath</li>
+          <li data-step="10">Move flask to water bath</li>
+          <li data-step="11">Set temp & start timer</li>
+          <li data-step="12">Proceed after water bath</li>
+          <li data-step="13">Add phenolphthalein</li>
+          <li data-step="14">Add drops</li>
+          <li data-step="15">Move pipette away</li>
+          <li data-step="16">Proceed to titration</li>
+          <li data-step="17">Position flask under burette</li>
+          <li data-step="18">Open burette nozzle</li>
+          <li data-step="19">View calculation</li>
+        </ul>
+
+        <div class="sidebar-table-wrapper">
+          <table class="sidebar-table">
+            <thead>
+              <tr>
+                <th>Butter</th>
+                <th>NaOH</th>
+                <!-- <th>Phenolphthalein</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="butterStatus">—</td>
+                <td id="naohStatus">—</td>
+                <!-- <td id="phenolStatus">—</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <img id="workingTable" src="./images/2.png" alt="Laboratory work table background" />
+      <div class="stepBox">
+        <span id="step" style="color: rgb(187, 4, 4);"">Step 1:</span> Click or touch the knife to cut a small piece of butter.
+            
+         </div>
+
+        <div id="pipette" data-tooltip="Dropper Pipette">
+          <img src="./images/pippete.png" alt="Pipette" id="pipette-w" title="Pipette" />
+          <img src="./images/pipette-acid.png" alt="Pipette with solution" id="diethylEtherSolution" />
+          <img src="./images/drop.png" alt="" id="drop1" />
+
+      </div>
+
+      <div id="weightingMachineWrapper" data-tooltip="Digital Balance">
+        <div id="weightingMachine">
+          <img src="./images/wheighing-machine.png" alt="Digital weighing machine" id="weightingMachineImage"
+            title="Weighting Machine" />
+          <div id="screen"></div>
+          <button id="power">Power</button>
+          <button id="tare">Tare</button>
+        </div>
+      </div>
+
+
+
+
+
+      <div id="stand" data-tooltip="Burette Stand">
+        <img src="./images/stand.png" alt="" id="standImage" title="stand" />
+
+
+        <!-- 
+         -->
+
+      </div>
+      <img src="./images/Burette-nob.png" alt="" id="buretteNozzel" />
+      <img src="./images/burette.png" alt="" id="burette" title="burette" />
+      <img src="./images/buretteSolution.png" alt="" id="buretteSolution" />
+      <img src="./images/drop.png" alt="" id="drop" />
+
+
+
+      <div id="Diethyl-Ether" data-tooltip="Neutralised Ethanol" class="reagent-bottle">
+        <img src="./images/NeutralisedEthanol.png" alt="Diethyl-Ether bottle" id="DiethylEtherImage"
+          title="Diethyl-Ether" />
+        <img src="./images/sulphuric-acid-solution.png" alt="Diethyl Ether solution" id="DiethylEtherSolutionImage" />
+        <img src="./images/bottleSolutionPouring.png" alt="Diethyl Ether solution" id="bottleSolutionPouringImage" />
+      </div>
+
+      <div id="Petroleum-Ether" data-tooltip="Phenolphthalein Indicator" class="reagent-bottle">
+        <img src="./images/indicator.png" alt="Petroleum-Ether bottle" id="PetroleumEtherImage"
+          title="PetroleumEther" />
+        <img src="./images/sulphuric-acid-solution.png" alt="Petroleum Ether solution"
+          id="PetroleumEtherSolutionImage" />
+      </div>
+      <!-- 
+          END OF FIX
+        -->
+      <!-- <img src="./images/pouring.png" alt="pouring" id="bottlePouring" /> -->
+
+      <div id="plate" data-tooltip="Porcelain Plate">
+        <img src="./images/plate.png" alt="Empty plate" id="plateImage" title="plate" />
+      </div>
+
+      <div id="knife" data-tooltip="Knife">
+        <img src="./images/knife.png" alt="Knife" id="knifeImage" title="knife" />
+      </div>
+      <div id="spatula" data-tooltip="Spatula">
+        <img src="./images/spatula.png" alt="Spatula" id="spatulaImage" title="spatula" />
+      </div>
+
+      <div id="pipettePouring" data-tooltip="Pouring">
+        <img src="./images/pouring.png" alt="Pouring stream" id="pouring" />
+        <img src="./images/ButterPouring.png" alt="Pouring butter" id="pouringButter" />
+      </div>
+      <div id="porcelainDish" data-tooltip="Porcelain Dish">
+        <img src="./images/porcelaindish.png" alt="Porcelain dish" id="porcelainDishImage" />
+        <img src="./images/porcelainDishSolution.png" alt="Solution in porcelain dish"
+          id="porcelainDishSolutionImage" />
+      </div>
+
+      <div id="waterBathWrapper" data-tooltip="Hot Plate">
+        <div id="waterBath">
+          <img src="./images/hotMetalPlate_1.png" alt="Water bath machine" title="waterBath" id="waterBathImage" />
+
+          <!-- Temperature Displays -->
+          <div id="waterBathCurrentTemp"></div>
+          <div id="waterBathSetTemp"></div>
+
+          <!-- Timer (Digital Clock) -->
+          <div id="waterBathCountdown" class="hidden">
+            <img src="./images/clock.png" alt="Clock" class="clock-bg" />
+            <span id="waterBathTime">01:00</span>
+          </div>
+
+          <!-- Controls -->
+          <button id="waterBathPower">Power</button>
+          <button id="tempUp">▲</button>
+          <button id="tempDown">▼</button>
+          <button id="waterBathStart">Start</button>
+        </div>
+      </div>
+
+
+
+      <div id="flask" data-tooltip="Conical Flask (250 ml)">
+        <img src="./images/12.png" alt="Conical flask" id="flaskImage" title="flask" />
+        <img src="./images/flaskSolution.png" alt="Melted butterk" id="butterMelted" />
+        <img src="./images/butterflask.png" alt="Butter in flask" id="flaskButter" />
+      </div>
+      <div id="cylinder50ml" data-tooltip="Measuring Cylinder (50 ml)">
+        <img src="./images/measuringCylinder50ml.png" alt="MeasringCylinder" id="cylinderImage"
+          title="Measuring Cylinder" />
+
+        <img src="./images/measuring-cylinder-solution.png" alt="Measuring Cylinder" id="cylinderSolution" />
+        <!-- <img
+            src="./images/butterflask.png"
+            alt="Butter in flask"
+            id="flaskButter"
+          /> -->
+      </div>
+      <div id="cylinderPouring">
+        <img src="./images/pouring.png" alt="Pouring" id="pouringCylinder" />
+        <!-- <img
+            src="./images/ButterPouring.png"
+            alt="Pouring butter"
+            id="pouringButter"
+          /> -->
+
+
+
+        <!-- <div id="beaker">
+          <img
+            src="./images/beaker.png"
+            alt="flask"
+            id="beakerImage"
+            title="flask"
+          />
+          <img src="./images/butterBeaker.png" alt="peantu butter" id="butterMeltedBeaker"/> -->
+        <!-- <img src="./images/ButterAndwater.png" alt="" id="butterMelted1"/> -->
+        <!-- <img src="./images/butterflask.png" alt="" id="flaskButter"/> -->
+      </div>
+
+      <div class="instrument" id="butter-block">
+        <div class="butter-shine"></div>
+      </div>
+      <div id="melted-butter"></div>
+      <div class="instrument" id="butter-slice" class="butter"></div>
+      <div id="butter-slice-1" class="butter"></div>
+      <div class="next">
+        <button id="btnNext">Next</button>
+      </div>
+      <div class="next2">
+        <button id="btnNext2">Next</button>
+      </div>
+      <div class="next3">
+        <button id="btnNext3">Next</button>
+      </div>
+      <div class="next4">
+        <button id="btnNext4">Next</button>
+      </div>
+
+      <div class="observation">
+        <button id="observationBtn">Observation</button>
+      </div>
+
+
+    </div>
+    <!-- START BUTTON -->
+    <div id="startBtnWrapper">
+      <button id="startExperimentBtn">Start</button>
+    </div>
+
+    <!-- <div id="completedStepBox">
+
+</div> -->
+
+
+
+    </div>
+    <!-- DEBUG PANEL (REMOVE BEFORE FINAL SUBMISSION) -->
+    <div id="debugPanel">
+      <button onclick="jumpToStep(9)">Step 9</button>
+      <button onclick="jumpToStep(8)">Step 8</button>
+      <button onclick="jumpToStep(10)">Step 10</button>
+      <button onclick="jumpToStep(17)">Step 17</button>
+      <button onclick="jumpToStep(18)">Step 18</button>
+    </div>
+
+
+  </main>
+  <!-- Global tooltip — outside #container so overflow:hidden never clips it -->
+  <div id="global-tooltip"></div>
+  <script src="./script.js"></script>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+
+</html>
